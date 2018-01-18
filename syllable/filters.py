@@ -106,7 +106,7 @@ def threshold_min(sig, thr):
   filt = filt[mask, :]
   return filt, np.arange(sig.shape[0])[mask]
 
-def ceci(sig, freq_fast=250.0, freq_slow=40.0, freq_env=700.0, thr=0.08):
+def ceci(sig, env, freq_fast=250.0, freq_slow=40.0, thr=0.08):
   """
   Implement the ceci filter (je)
 
@@ -116,6 +116,9 @@ def ceci(sig, freq_fast=250.0, freq_slow=40.0, freq_env=700.0, thr=0.08):
   sig : numpy array
       An array of (nsamples, 2). First column is time, second one is
       envelope.
+
+  env : numpy array
+      The envelope of the signal
 
   freq_fast : float
       Frequency of the fast butter filter
@@ -137,7 +140,6 @@ def ceci(sig, freq_fast=250.0, freq_slow=40.0, freq_env=700.0, thr=0.08):
       envelope.
       idx is the array of the positions
   """
-  env = envelope(sig, freq_env)
   butter_fast = butter(env, freq_fast)
   butter_slow = butter(env, freq_slow)
   peakind_min_p = relative_min(butter_slow)
